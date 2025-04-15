@@ -23,27 +23,22 @@ export default class SignUpForm {
 
     async fillName(name) {
         await this.signUpFormNameInput.fill(name);
-        return this;
     }
 
     async fillLastName(lastName) {
         await this.signUpFormLastNameInput.fill(lastName);
-        return this;
     }
 
     async fillEmail(email) {
         await this.signUpFormEmailInput.fill(email);
-        return this;
     }
 
     async fillPassword(password) {
         await this.signUpFormPasswordInput.fill(password);
-        return this;
     }
 
     async fillRepeatPassword(repeatPassword) {
         await this.signUpFormRepeatPasswordInput.fill(repeatPassword);
-        return this;
     }
 
     async clickRegisterButton() {
