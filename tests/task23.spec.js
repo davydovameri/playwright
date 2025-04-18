@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import SignUpForm from '../poms/SignUpPage.js';
+import { SignUpForm } from '../poms/pages';
 import { ERROR_MESSAGES, PASSWORDS, NAMES, EMAILS } from '../test_data';
 import { generateAqaEmail, showErrorMessage } from '../helpers';
 

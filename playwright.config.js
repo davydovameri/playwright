@@ -13,6 +13,7 @@ import { defineConfig, devices } from '@playwright/test';
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
+  timeout: 120_000,
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -27,6 +28,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
+    viewport: { width: 1920, height: 1080 },
     baseURL: 'https://qauto.forstudy.space',
     httpCredentials: {
       username: 'guest',

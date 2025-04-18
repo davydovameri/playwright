@@ -1,10 +1,13 @@
-export default class SignUpForm {
+import { BasePage } from '../basePom';
+
+export default class SignUpForm extends BasePage {
 
     /**
      * @param {import('@playwright/test').Page} page
      */
     constructor(page) {
-        this.page = page;
+        super(page);
+
         this.signInButton = this.page.locator('button', { hasText: 'Sign In' });
         this.registrationButton = this.page.locator('button', { hasText: 'Registration' });
         this.registrationLabel = this.page.locator('[class="modal-title"]', { hasText: 'Registration' });
