@@ -14,10 +14,8 @@ test.describe('Instructions Page tests', () => {
         leftNavBar = new LeftNavBar(page);
 
         await login(page, 'mar_iia@gmail.com', 'Snikers0801');
-
-        await page.waitForTimeout(1500);
         await leftNavBar.selectNavItem('instructions');
-        await page.waitForTimeout(1500);
+        await instructionsPage.selectors.brandDropdown.waitFor();
     });
 
     test('should select a car of each brand and model and check that each item on the page matches the search', async ({ page }) => {
@@ -32,7 +30,7 @@ test.describe('Instructions Page tests', () => {
                 await instructionsPage.selectBrand(brand);
                 await instructionsPage.selectModel(model);
                 await instructionsPage.clickSearchButton();
-                await page.waitForTimeout(1500);
+                await instructionsPage.selectors.items.first().waitFor({ timeout: 5000 }).catch(() => { });
 
                 await validateDownloadLinks(instructionsPage, brand, model);
             }
