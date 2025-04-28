@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 
-export async function login(page, email, password) {
+export async function login(page, email = process.env.USER_LOGIN, password = process.env.USER_PASSWORD) {
     await page.goto('/');
     await expect(page.getByRole('button', { name: 'Sign In' })).toBeVisible();
     await page.getByRole('button', { name: 'Sign In' }).click();
