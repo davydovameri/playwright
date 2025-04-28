@@ -4,10 +4,12 @@
   "main": "index.js",
   "scripts": {
     "test": "playwright test",
-    "test:ui":"playwright test --ui",
+    "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
-    "test:chrome": "playwright test --project=chromium"
+    "test:chrome": "playwright test --project=chromium",
+    "test:qauto": "set ENV=.qauto&&playwright test --ui",
+    "test:qauto2": "set ENV=.qauto2&&playwright test --ui"
   },
   "keywords": [],
   "author": "",

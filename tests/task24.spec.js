@@ -13,7 +13,7 @@ test.describe('Instructions Page tests', () => {
         instructionsPage = new InstructionsPage(page);
         leftNavBar = new LeftNavBar(page);
 
-        await login(page, 'mar_iia@gmail.com', 'Snikers0801');
+        await login(page);
         await leftNavBar.selectNavItem('instructions');
         await instructionsPage.selectors.brandDropdown.waitFor();
     });
