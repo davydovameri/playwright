@@ -8,8 +8,8 @@
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
     "test:chrome": "playwright test --project=chromium",
-    "test:qauto": "set ENV=.qauto&&playwright test --ui",
-    "test:qauto2": "set ENV=.qauto2&&playwright test --ui"
+    "test:qauto": "cross-env ENV=.qauto playwright test --ui",
+    "test:qauto2": "cross-env ENV=.qauto2 playwright test --ui"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +21,7 @@
     "eslint-config-prettier": "^10.1.1"
   },
   "dependencies": {
+    "cross-env": "^7.0.3",
     "eslint-plugin-playwright": "^2.2.0",
     "prettier": "^3.5.3"
   }

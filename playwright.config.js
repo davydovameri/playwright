@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 import dotenv from "dotenv";
 
 dotenv.config({
-  path: `env/.env${process.env.ENV}`,
+  path: `env/.env${process.env.ENV || 'qauto'}`,
 })
 /**
  * @see https://playwright.dev/docs/test-configuration
