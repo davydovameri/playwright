@@ -51,6 +51,13 @@ export default defineConfig({
       use: { ...devices['Desktop Safari'] },
     },
 
+    { name: 'setup', testMatch: /.*\.setup\.js/, testDir: './setup' },
+    {
+      name: 'Google Chrome Setup',
+      use: { ...devices['Desktop Chrome'], channel: 'chrome', storageState: 'storage-state.json' },
+      dependencies: ['setup']
+    },
+
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
