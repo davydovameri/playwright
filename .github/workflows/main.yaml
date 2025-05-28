@@ -35,4 +35,4 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        run: npx playwright test tests/ --project=firefox
+        run: npx playwright test tests/ --project=\"no-login\" --project=\"Google Chrome Setup\"
