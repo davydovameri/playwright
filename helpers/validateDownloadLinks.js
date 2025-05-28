@@ -39,7 +39,9 @@ export async function validateDownloadLinks(instructionsPage, brand, model) {
             }
         }
 
-        if ((await instructionsPage.selectors.nextButton.count()) === 0 || await instructionsPage.isNextDisabled()) {
+        const nextButtonsCount = await instructionsPage.selectors.nextButton.count();
+
+        if (nextButtonsCount === 0 || await instructionsPage.isNextDisabled()) {
             break;
         }
 
