@@ -30,4 +30,4 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        run: npx playwright test tests/task24.spec.js --project=firefox
+        run: npx playwright test tests/ --project=firefox
