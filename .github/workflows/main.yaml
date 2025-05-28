@@ -15,6 +15,7 @@ jobs:
       image: mcr.microsoft.com/playwright:v1.51.1-jammy
 
     env:
+      HOME: /root
       BASE_URL: ${{ secrets.BASE_URL }}
       HTTP_CREDENTIALS_USERNAME: ${{ secrets.HTTP_CREDENTIALS_USERNAME }}
       HTTP_CREDENTIALS_PASSWORD: ${{ secrets.HTTP_CREDENTIALS_PASSWORD }}
