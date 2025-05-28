@@ -6,4 +6,3 @@ node_modules/
 .eslintrc.json
 .prettierrc
 env/
-/test_data
