@@ -9,7 +9,8 @@
     "test:debug": "playwright test --debug",
     "test:chrome": "playwright test --project=chromium",
     "test:qauto": "cross-env ENV=.qauto playwright test --ui",
-    "test:qauto2": "cross-env ENV=.qauto2 playwright test --ui"
+    "test:qauto2": "cross-env ENV=.qauto2 playwright test --ui",
+    "test:qauto:firefox": "cross-env ENV=.qauto playwright test --project=firefox"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +23,7 @@
   },
   "dependencies": {
     "cross-env": "^7.0.3",
+    "dotenv": "^16.5.0",
     "eslint-plugin-playwright": "^2.2.0",
     "prettier": "^3.5.3"
   }
