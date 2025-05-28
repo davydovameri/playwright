@@ -7,5 +7,6 @@ test('should add a car', async ({ userGaragePage }) => {
     await userGaragePage.fillMileage('30000');
     await userGaragePage.clickAddButton();
 
-    await expect(userGaragePage.selectors.carCardCarName).toHaveText('BMW 5');
+    const carName = userGaragePage.selectors.carCardCarName.filter({ hasText: 'BMW 5' });
+    await expect(carName).toHaveText('BMW 5');
 });

@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('car POST requests', () => {
-    test('should create car with valid data', async ({ page }) => {
+    test('should create car with valid data and then delete', async ({ page }) => {
         const response = await page.request.post('https://qauto.forstudy.space/api/cars', {
             data: {
                 carBrandId: 1,
@@ -11,6 +11,12 @@ test.describe('car POST requests', () => {
         });
 
         expect(response.status()).toBe(201);
+
+        const createdCar = await response.json();
+        const carId = createdCar.data.id;
+
+        const deleteResponse = await page.request.delete(`https://qauto.forstudy.space/api/cars/${carId}`);
+        expect(deleteResponse.status()).toBe(200);
     });
 
     test('should not create car without car id', async ({ page }) => {
