@@ -32,7 +32,7 @@ export default class InstructionsPage extends BasePage {
 
     async clickSearchButton() {
         await this.selectors.searchButton.click();
-        await this.page.waitForTimeout(100);
+        await this.page.waitForTimeout(1000);
     }
 
     getItemDescription(item) {
