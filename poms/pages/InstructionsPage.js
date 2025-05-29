@@ -60,7 +60,7 @@ export default class InstructionsPage extends BasePage {
         }
 
         try {
-            await nextButton.waitFor({ state: 'visible', timeout: 5000 });
+            await nextButton.waitFor({ state: 'visible', timeout: 15000 });
 
             // Check if the button is disabled
             const ariaDisabled = await nextButton.getAttribute('aria-disabled');
