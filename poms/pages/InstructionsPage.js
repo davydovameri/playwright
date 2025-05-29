@@ -46,62 +46,40 @@ export default class InstructionsPage extends BasePage {
     }
 
     async isNextDisabled() {
-        const parentLi = this.selectors.nextButton.locator('xpath=..');
-        const classAttr = await parentLi.getAttribute('class');
-        return classAttr?.includes('disabled');
+        const nextButton = this.selectors.nextButton;
+        if (await nextButton.count() === 0) return true;
+
+        const classAttribute = await nextButton.getAttribute('class');
+        const ariaDisabled = await nextButton.getAttribute('aria-disabled');
+        return classAttribute?.includes('disabled') || ariaDisabled === 'true';
     }
+
 
     async clickNext() {
         const nextButton = this.selectors.nextButton;
 
-        if (await nextButton.count() === 0) {
-            console.log('No Next button in DOM — probably last page.');
-            return;
-        }
+        const buttonCount = await nextButton.count();
+        if (buttonCount === 0) return; // No next button
 
-        try {
-            await nextButton.waitFor({ state: 'attached', timeout: 15000 });
+        const isDisabled = await this.isNextDisabled();
+        if (isDisabled) return; // Next is disabled, don’t click
 
-            const ariaDisabled = await nextButton.getAttribute('aria-disabled');
-            if (ariaDisabled === 'true') {
-                console.log('Next button is disabled.');
-                return;
-            }
+        const firstItem = await this.selectors.items.first();
+        const previousText = await firstItem.textContent();
 
-            await nextButton.scrollIntoViewIfNeeded();
-            await nextButton.waitFor({ state: 'visible', timeout: 5000 });
-
-            const hasPointerEvents = await nextButton.evaluate((el) => {
-                return window.getComputedStyle(el).pointerEvents !== 'none';
-            });
-
-            if (!hasPointerEvents) {
-                console.warn('Next button is not receiving pointer events.');
-                return;
-            }
-
-            for (let i = 0; i < 3; i++) {
-                try {
-                    await nextButton.click({ trial: true });
-                    await nextButton.click();
-                    console.log('Next button clicked successfully.');
-                    await this.page.waitForTimeout(1000);
-                    return;
-                } catch (error) {
-                    console.log(`Retrying click... (${i + 1})`);
-                    await this.page.waitForTimeout(500);
-                }
-            }
-
-            throw new Error('Next button could not be clicked after retries.');
-        } catch (err) {
-            console.warn('Next button exists but could not be clicked or was not visible.');
-
-            // 👉 Take a screenshot for debugging
-            await this.page.screenshot({ path: 'next-button-error.png', fullPage: true });
-
-            throw err;
-        }
+        await Promise.all([
+            nextButton.click(),
+            this.page.waitForFunction(
+                (oldText) => {
+                    const first = document.querySelector('.instructions_list li p.instruction-link_description');
+                    return first && first.textContent.trim() !== oldText.trim();
+                },
+                previousText,
+                { timeout: 5000 }
+            ).catch(() => {
+                console.warn('Next page did not change content in time.');
+            })
+        ]);
     }
 
 
