@@ -32,8 +32,7 @@ export default class InstructionsPage extends BasePage {
 
     async clickSearchButton() {
         await this.selectors.searchButton.click();
-        //await this.page.waitForTimeout(100);
-        await this.page.waitForSelector('button:has-text("Search") >> xpath=ancestor-or-self::*[contains(@class, "-disabled")]');
+        await this.page.waitForTimeout(100);
     }
 
     getItemDescription(item) {
