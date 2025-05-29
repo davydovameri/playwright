@@ -23,7 +23,9 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    viewport: { width: 1920, height: 1080 },
+    headless: !!process.env.CI, // make sure it's true in CI
+    viewport: { width: 1280, height: 720 },
+    ignoreHTTPSErrors: true,
     baseURL: process.env.BASE_URL,
     httpCredentials: {
       username: process.env.HTTP_CREDENTIALS_USERNAME,

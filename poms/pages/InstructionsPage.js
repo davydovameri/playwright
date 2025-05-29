@@ -71,16 +71,21 @@ export default class InstructionsPage extends BasePage {
             await nextButton.scrollIntoViewIfNeeded();
             await nextButton.waitFor({ state: 'visible', timeout: 5000 });
 
-            // Small delay to avoid race condition with DOM changes
-            await this.page.waitForTimeout(300);
+            const hasPointerEvents = await nextButton.evaluate((el) => {
+                return window.getComputedStyle(el).pointerEvents !== 'none';
+            });
 
-            // Retry clicking with fallback in case of instability
+            if (!hasPointerEvents) {
+                console.warn('Next button is not receiving pointer events.');
+                return;
+            }
+
             for (let i = 0; i < 3; i++) {
                 try {
                     await nextButton.click({ trial: true });
                     await nextButton.click();
                     console.log('Next button clicked successfully.');
-                    await this.page.waitForTimeout(1000); // wait for next page content
+                    await this.page.waitForTimeout(1000);
                     return;
                 } catch (error) {
                     console.log(`Retrying click... (${i + 1})`);
@@ -91,8 +96,13 @@ export default class InstructionsPage extends BasePage {
             throw new Error('Next button could not be clicked after retries.');
         } catch (err) {
             console.warn('Next button exists but could not be clicked or was not visible.');
+
+            // 👉 Take a screenshot for debugging
+            await this.page.screenshot({ path: 'next-button-error.png', fullPage: true });
+
             throw err;
         }
     }
+
 
 }
