@@ -13,7 +13,7 @@ export default class InstructionsPage extends BasePage {
         modelOption: (model) => this.page.locator('//ul[contains(@class, "model-select-dropdown_menu")]//li').filter({ hasText: new RegExp(`^${model}$`) }),
         searchButton: this.page.locator('button', { hasText: 'Search' }),
         items: this.page.locator('//ul[contains(@class, "instructions_list")]/li'),
-        nextButton: this.page.locator('a[aria-label="Next"]')
+        nextButton: this.page.locator('.instructions a[aria-label="Next"]')
     }
 
     async selectBrand(brand) {
@@ -51,7 +51,6 @@ export default class InstructionsPage extends BasePage {
     async clickNext() {
         const nextButton = this.selectors.nextButton;
 
-        // First: check if the button exists
         if (await nextButton.count() === 0) {
             console.log('No Next button in DOM — probably last page.');
             return;
@@ -59,6 +58,14 @@ export default class InstructionsPage extends BasePage {
 
         try {
             await nextButton.waitFor({ state: 'visible', timeout: 5000 });
+
+            // Check if the button is disabled
+            const ariaDisabled = await nextButton.getAttribute('aria-disabled');
+            if (ariaDisabled === 'true') {
+                console.log('Next button is disabled.');
+                return;
+            }
+
             await nextButton.click();
             await this.page.waitForTimeout(1000); // brief wait for content to update
         } catch (err) {
