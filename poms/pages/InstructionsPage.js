@@ -49,15 +49,22 @@ export default class InstructionsPage extends BasePage {
     }
 
     async clickNext() {
-        try {
-            await this.page.waitForSelector('.instructions', { state: 'hidden', timeout: 5000 });
-        } catch (e) {
+        const nextButton = this.selectors.nextButton;
 
+        // First: check if the button exists
+        if (await nextButton.count() === 0) {
+            console.log('No Next button in DOM — probably last page.');
+            return;
         }
 
-        await this.page.waitForSelector('a[aria-label="Next"]', { state: 'visible' });
-        await this.selectors.nextButton.click();
-        await this.page.waitForTimeout(1000);
+        try {
+            await nextButton.waitFor({ state: 'visible', timeout: 5000 });
+            await nextButton.click();
+            await this.page.waitForTimeout(1000); // brief wait for content to update
+        } catch (err) {
+            console.warn('Next button exists but could not be clicked or was not visible.');
+            throw err;
+        }
     }
 
 }

@@ -25,9 +25,9 @@ jobs:
     steps:
       - name: Fix Docker config permission warning
         run: |
-          mkdir -p /root/.docker
-          touch /root/.docker/config.json
-          chmod 644 /root/.docker/config.json
+         mkdir -p ~/.docker
+         touch ~/.docker/config.json
+         chmod 644 ~/.docker/config.json
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
 
