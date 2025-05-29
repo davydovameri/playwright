@@ -33,10 +33,7 @@ export default class InstructionsPage extends BasePage {
     async clickSearchButton() {
         await this.selectors.searchButton.click();
         //await this.page.waitForTimeout(100);
-        await this.page.waitForFunction(() => {
-            const el = document.querySelector('div.instructions-search-controls');
-            return el?.className.includes('-disabled');
-        });
+        await this.page.waitForSelector('button:has-text("Search") >> xpath=ancestor-or-self::*[contains(@class, "-disabled")]');
     }
 
     getItemDescription(item) {
