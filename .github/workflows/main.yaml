@@ -23,11 +23,6 @@ jobs:
       USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
 
     steps:
-      - name: Fix Docker config permission warning
-        run: |
-         sudo mkdir -p /root/.docker
-         sudo touch /root/.docker/config.json
-         sudo chmod 644 /root/.docker/config.json
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
 
