@@ -26,32 +26,24 @@ export default class InstructionsPage extends BasePage {
     async selectModel(model) {
         await this.selectors.modelDropdown.click();
 
-        // Wait for dropdown menu to appear
         await this.page.waitForSelector('.model-select-dropdown_menu.dropdown-menu.show', {
-            state: 'visible',
-            timeout: 5000
+            state: 'visible'
         });
 
-        // Get a fresh locator — avoids "element is not attached" errors
+        // Re-fetch locator after dropdown is visible
         const freshOption = this.page
             .locator('.model-select-dropdown_menu.dropdown-menu.show li')
             .filter({ hasText: new RegExp(`^${model}$`) });
 
-        // Make sure it's attached and visible
-        await freshOption.waitFor({ state: 'visible', timeout: 5000 });
+        await freshOption.waitFor({ state: 'attached', timeout: 5000 });
+        await this.page.waitForTimeout(200); // let DOM stabilize
 
-        // Remove 'disabled' class if necessary
-        await freshOption.evaluate(el => el.classList.remove('disabled'));
-
-        // Safe scroll into view
+        await freshOption.evaluate(el => el.classList.remove('disabled')).catch(() => { });
         await freshOption.scrollIntoViewIfNeeded();
-
-        // Brief wait to stabilize UI
         await this.page.waitForTimeout(300);
-
-        // Click with force to bypass any minor overlays
         await freshOption.click({ force: true });
     }
+
 
 
     async clickSearchButton() {
@@ -66,14 +58,16 @@ export default class InstructionsPage extends BasePage {
         return item.locator('//a[contains(@class, "instruction-link_download")]');
     }
 
+    get nextButtonSelector() {
+        return '.instructions a[aria-label="Next"]';
+    }
+
     async isNextDisabled() {
-        const nextBtn = this.nextButton;
+        const nextBtn = this.page.locator(this.nextButtonSelector);
         if (!await nextBtn.isVisible()) return true;
         const disabledAttr = await nextBtn.getAttribute('aria-disabled');
         return disabledAttr === 'true';
     }
-
-
 
     async clickNext() {
         await this.page.waitForSelector('.instructions a[aria-label="Next"]', { state: 'attached', timeout: 5000 });
