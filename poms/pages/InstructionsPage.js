@@ -60,17 +60,35 @@ export default class InstructionsPage extends BasePage {
         }
 
         try {
-            await nextButton.waitFor({ state: 'visible', timeout: 15000 });
+            await nextButton.waitFor({ state: 'attached', timeout: 15000 });
 
-            // Check if the button is disabled
             const ariaDisabled = await nextButton.getAttribute('aria-disabled');
             if (ariaDisabled === 'true') {
                 console.log('Next button is disabled.');
                 return;
             }
 
-            await nextButton.click();
-            await this.page.waitForTimeout(1000); // brief wait for content to update
+            await nextButton.scrollIntoViewIfNeeded();
+            await nextButton.waitFor({ state: 'visible', timeout: 5000 });
+
+            // Small delay to avoid race condition with DOM changes
+            await this.page.waitForTimeout(300);
+
+            // Retry clicking with fallback in case of instability
+            for (let i = 0; i < 3; i++) {
+                try {
+                    await nextButton.click({ trial: true });
+                    await nextButton.click();
+                    console.log('Next button clicked successfully.');
+                    await this.page.waitForTimeout(1000); // wait for next page content
+                    return;
+                } catch (error) {
+                    console.log(`Retrying click... (${i + 1})`);
+                    await this.page.waitForTimeout(500);
+                }
+            }
+
+            throw new Error('Next button could not be clicked after retries.');
         } catch (err) {
             console.warn('Next button exists but could not be clicked or was not visible.');
             throw err;
