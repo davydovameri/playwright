@@ -49,7 +49,15 @@ export default class InstructionsPage extends BasePage {
     }
 
     async clickNext() {
+        try {
+            await this.page.waitForSelector('.instructions', { state: 'hidden', timeout: 5000 });
+        } catch (e) {
+
+        }
+
+        await this.page.waitForSelector('a[aria-label="Next"]', { state: 'visible' });
         await this.selectors.nextButton.click();
         await this.page.waitForTimeout(1000);
     }
+
 }

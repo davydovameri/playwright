@@ -2,7 +2,7 @@
   "cookies": [
     {
       "name": "YSC",
-      "value": "ntjMs7K8wzU",
+      "value": "LHZ9TO_keSM",
       "domain": ".youtube.com",
       "path": "/",
       "expires": -1,
@@ -11,41 +11,41 @@
       "sameSite": "None"
     },
     {
-      "name": "VISITOR_INFO1_LIVE",
-      "value": "w3G3JWSozSU",
+      "name": "__Secure-ROLLOUT_TOKEN",
+      "value": "CM3x_tKxvPr5wgEQ-NK10KbIjQMY-NK10KbIjQM%3D",
       "domain": ".youtube.com",
       "path": "/",
-      "expires": 1764024435.576507,
+      "expires": 1764060735.818181,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "VISITOR_INFO1_LIVE",
+      "value": "xFvSVSf-FV4",
+      "domain": ".youtube.com",
+      "path": "/",
+      "expires": 1764060735.818852,
       "httpOnly": true,
       "secure": true,
       "sameSite": "None"
     },
     {
       "name": "VISITOR_PRIVACY_METADATA",
-      "value": "CgJVQRIEGgAgLQ%3D%3D",
+      "value": "CgJVQRIEGgAgMA%3D%3D",
       "domain": ".youtube.com",
       "path": "/",
-      "expires": 1764024435.576603,
-      "httpOnly": true,
-      "secure": true,
-      "sameSite": "None"
-    },
-    {
-      "name": "__Secure-ROLLOUT_TOKEN",
-      "value": "CObIxrKNn8CqEBC31aazn8eNAxi31aazn8eNAw%3D%3D",
-      "domain": ".youtube.com",
-      "path": "/",
-      "expires": 1764024435.576667,
+      "expires": 1764060735.818924,
       "httpOnly": true,
       "secure": true,
       "sameSite": "None"
     },
     {
       "name": "sid",
-      "value": "s%3AVjaFoo3wTCV5ibpfU5k0DdzlR-EK2_NM.af2WuJOtXSREOcWMsaKyJFmnNq%2FFsldEf9%2FymZaxvqw",
+      "value": "s%3AuK9OATbGD26joYav-YYTgNQ56ZkoNXCQ.iWhU3Fjg86xLUCynLPPkS%2FwsMw1fyCNIkJmt7lYWOUI",
       "domain": ".forstudy.space",
       "path": "/",
-      "expires": 1748558838.29541,
+      "expires": 1748595137.877082,
       "httpOnly": false,
       "secure": false,
       "sameSite": "Lax"
@@ -57,7 +57,7 @@
       "localStorage": [
         {
           "name": "ytidb::LAST_RESULT_ENTRY_KEY",
-          "value": "{\"data\":{\"hasSucceededOnce\":true},\"expiration\":1751064436707,\"creation\":1748472436707}"
+          "value": "{\"data\":{\"hasSucceededOnce\":true},\"expiration\":1751100736859,\"creation\":1748508736859}"
         }
       ]
     }
