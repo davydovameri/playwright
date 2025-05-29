@@ -27,7 +27,10 @@ export default class InstructionsPage extends BasePage {
         await this.selectors.modelDropdown.click();
         const option2 = this.selectors.modelOption(model);
         await option2.evaluate(el => el.classList.remove('disabled'));
-        await option2.click();
+        await this.page.waitForSelector('.model-select-dropdown_menu.dropdown-menu.show', { state: 'visible' });
+        await option2.scrollIntoViewIfNeeded();
+        await this.page.waitForTimeout(300);
+        await option2.click({ force: true });
     }
 
     async clickSearchButton() {
