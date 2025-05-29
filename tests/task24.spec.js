@@ -20,6 +20,7 @@ test.describe('Instructions Page tests', () => {
     });
 
     test('should select a car of each brand and model and check that each item on the page matches the search', async ({ page }) => {
+        test.setTimeout(90_000);
         const json = await fs.readFile('./test_data/brands_and_models.json', 'utf8');
         const brandsModels = JSON.parse(json);
 

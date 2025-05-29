@@ -25,13 +25,34 @@ export default class InstructionsPage extends BasePage {
 
     async selectModel(model) {
         await this.selectors.modelDropdown.click();
-        const option2 = this.selectors.modelOption(model);
-        await option2.evaluate(el => el.classList.remove('disabled'));
-        await this.page.waitForSelector('.model-select-dropdown_menu.dropdown-menu.show', { state: 'visible' });
-        await option2.scrollIntoViewIfNeeded();
+
+        // Wait for dropdown menu to appear
+        await this.page.waitForSelector('.model-select-dropdown_menu.dropdown-menu.show', {
+            state: 'visible',
+            timeout: 5000
+        });
+
+        // Get a fresh locator — avoids "element is not attached" errors
+        const freshOption = this.page
+            .locator('.model-select-dropdown_menu.dropdown-menu.show li')
+            .filter({ hasText: new RegExp(`^${model}$`) });
+
+        // Make sure it's attached and visible
+        await freshOption.waitFor({ state: 'visible', timeout: 5000 });
+
+        // Remove 'disabled' class if necessary
+        await freshOption.evaluate(el => el.classList.remove('disabled'));
+
+        // Safe scroll into view
+        await freshOption.scrollIntoViewIfNeeded();
+
+        // Brief wait to stabilize UI
         await this.page.waitForTimeout(300);
-        await option2.click({ force: true });
+
+        // Click with force to bypass any minor overlays
+        await freshOption.click({ force: true });
     }
+
 
     async clickSearchButton() {
         await this.selectors.searchButton.click();
@@ -46,41 +67,52 @@ export default class InstructionsPage extends BasePage {
     }
 
     async isNextDisabled() {
-        const nextButton = this.selectors.nextButton;
-        if (await nextButton.count() === 0) return true;
-
-        const classAttribute = await nextButton.getAttribute('class');
-        const ariaDisabled = await nextButton.getAttribute('aria-disabled');
-        return classAttribute?.includes('disabled') || ariaDisabled === 'true';
+        const nextBtn = this.nextButton;
+        if (!await nextBtn.isVisible()) return true;
+        const disabledAttr = await nextBtn.getAttribute('aria-disabled');
+        return disabledAttr === 'true';
     }
 
 
-    async clickNext() {
-        const nextButton = this.selectors.nextButton;
 
-        const buttonCount = await nextButton.count();
-        if (buttonCount === 0) return; // No next button
+    async clickNext() {
+        await this.page.waitForSelector('.instructions a[aria-label="Next"]', { state: 'attached', timeout: 5000 });
+
+        let nextButton = this.selectors.nextButton;
+
+        // Wait until the button is not covered by any overlay
+        await this.page.waitForFunction(() => {
+            const el = document.querySelector('.instructions a[aria-label="Next"]');
+            if (!el) return false;
+            const rect = el.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const topEl = document.elementFromPoint(centerX, centerY);
+            return el.contains(topEl);
+        }, null, { timeout: 5000 });
 
         const isDisabled = await this.isNextDisabled();
-        if (isDisabled) return; // Next is disabled, don’t click
+        if (isDisabled) return;
 
         const firstItem = await this.selectors.items.first();
-        const previousText = await firstItem.textContent();
+        const oldText = await firstItem.textContent();
+
+        // Re-fetch nextButton to avoid detachment
+        nextButton = this.selectors.nextButton;
 
         await Promise.all([
             nextButton.click(),
             this.page.waitForFunction(
-                (oldText) => {
+                (prev) => {
                     const first = document.querySelector('.instructions_list li p.instruction-link_description');
-                    return first && first.textContent.trim() !== oldText.trim();
+                    return first && first.textContent.trim() !== prev.trim();
                 },
-                previousText,
-                { timeout: 5000 }
-            ).catch(() => {
-                console.warn('Next page did not change content in time.');
-            })
+                oldText,
+                { timeout: 8000 }
+            )
         ]);
     }
+
 
 
 }
