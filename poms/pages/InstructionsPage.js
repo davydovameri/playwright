@@ -32,7 +32,11 @@ export default class InstructionsPage extends BasePage {
 
     async clickSearchButton() {
         await this.selectors.searchButton.click();
-        await this.page.waitForTimeout(100);
+        //await this.page.waitForTimeout(100);
+        await this.page.waitForFunction(() => {
+            const el = document.querySelector('div.instructions-search-controls');
+            return el?.className.includes('-disabled');
+        });
     }
 
     getItemDescription(item) {
