@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 import dotenv from "dotenv";
 
 dotenv.config({
-  path: `env/.env${process.env.ENV || 'qauto'}`,
+  path: `env/.env.${process.env.ENV || 'qauto'}`,
 })
 /**
  * @see https://playwright.dev/docs/test-configuration
@@ -17,7 +17,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: 4,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -51,11 +51,27 @@ export default defineConfig({
       use: { ...devices['Desktop Safari'] },
     },
 
-    { name: 'setup', testMatch: /.*\.setup\.js/, testDir: './setup' },
+    {
+      name: 'no-login',
+      testMatch: /.*task23\.spec\.js/,
+      testDir: './tests',
+      use: { ...devices['Desktop Chrome'], channel: "chromium" },
+    },
+    {
+      name: 'setup',
+      testMatch: /.*\.setup\.js/,
+      testDir: './setup'
+    },
     {
       name: 'Google Chrome Setup',
-      use: { ...devices['Desktop Chrome'], channel: 'chrome', storageState: 'storage-state.json' },
-      dependencies: ['setup']
+      testMatch: /.*task(24|27|28-[12])\.spec\.js/,
+      testDir: './tests',
+      dependencies: ['setup'],
+      use: {
+        ...devices['Desktop Chrome'],
+        channel: "chromium",
+        storageState: 'storage-state.json',
+      },
     },
 
     /* Test against mobile viewports. */

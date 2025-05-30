@@ -13,7 +13,8 @@ test.describe('Instructions Page tests', () => {
         instructionsPage = new InstructionsPage(page);
         leftNavBar = new LeftNavBar(page);
 
-        await login(page);
+        //await login(page);
+        await page.goto('/');
         await leftNavBar.selectNavItem('instructions');
         await instructionsPage.selectors.brandDropdown.waitFor();
     });

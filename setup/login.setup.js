@@ -15,4 +15,5 @@ setup('login before tests', async ({ page }) => {
     await expect(page).toHaveURL(/\/panel\/garage/);
 
     await page.context().storageState({ path: authFile });
+    await page.context().close();
 });

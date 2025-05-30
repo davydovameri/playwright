@@ -2,13 +2,14 @@ import { test, expect } from '@playwright/test';
 import { SignUpForm } from '../poms/pages';
 import { ERROR_MESSAGES, PASSWORDS, NAMES, EMAILS } from '../test_data';
 import { generateAqaEmail, showErrorMessage } from '../helpers';
+import { login, validateDownloadLinks } from '../helpers';
 
 let signUpForm;
 
 test.describe('User Registration Form', () => {
   test.beforeEach(async ({ page }) => {
-    signUpForm = new SignUpForm(page);
     await page.goto('/');
+    signUpForm = new SignUpForm(page);
     await signUpForm.openRegistrationForm();
   });
 
